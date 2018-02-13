@@ -14,8 +14,6 @@ const optionDefinitions = [
     { name: 'name', alias: 'n', type: String, description: 'Set migration name (default: "noname")',},
     { name: 'comment', alias: 'c', type: String, description: 'Set migration comment' },
     { name: 'execute', alias: 'x', type: Boolean, description: 'Create new migration and execute it' },
-    { name: 'migrations-path', type: String, description: 'The path to the migrations folder' },
-    { name: 'models-path', type: String, description: 'The path to the models folder' },
     { name: 'help', type: Boolean, description: 'Show this message' }
 ];
 
@@ -31,9 +29,8 @@ if (options.help)
     process.exit(0);    
 }
 
-let migrationsDir = path.join(process.env.PWD, options['migrations-path'] || 'migrations'),
-    modelsDir     = path.join(process.env.PWD, options['models-path'] || 'models');
-
+let migrationsDir = path.join(process.env.PWD, 'migrations'),
+    modelsDir     = path.join(process.env.PWD, 'models');
 
 // current state
 const currentState = {
@@ -61,6 +58,8 @@ currentState.tables = migrate.reverseModels(sequelize, models);
     
 let actions = migrate.parseDifference(previousState.tables, currentState.tables);
 
+
+//console.log(actions);
 // sort actions    
 migrate.sortActions(actions);
 
